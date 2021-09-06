@@ -64,14 +64,21 @@ class Blockchain {
     _addBlock(block) {
         let self = this;
         return new Promise(async (resolve, reject) => {
-            self.height++
-            block.time = new Date().getTime().toString().slice(0,-3)
-            if (self.height > 0) {
-                block.previousBlockHash = self.chain[self.height-1].hash
+            try {
+                self.height++
+                block.time = new Date().getTime().toString().slice(0,-3)
+                if (self.height > 0) {
+                    block.previousBlockHash = self.chain[self.height-1].hash
+                }
+                block.height = self.height
+                block.hash = SHA256(JSON.stringify(block)).toString();
+                self.chain.push(block)
+                self.validateChain()
+                .then(resolve(block))
+                .catch(err => {console.log(err)})
+            } catch {
+                reject("Error adding block")
             }
-            block.height = self.height
-            block.hash = SHA256(JSON.stringify(block)).toString();
-            self.chain.push(block)
         });
     }
 
@@ -111,19 +118,17 @@ class Blockchain {
         return new Promise(async (resolve, reject) => {
             let time = parseInt(message.split(':')[1])
             let currentTime = parseInt(new Date().getTime().toString().slice(0,-3))
-            console.log("Validating time")
-            if (currentTime - time > 300000) {
+            if (currentTime - time > 300) {
                 reject("Time is greater than 5 minutes")
             }
-            console.log("Validating message")
             if (!bitcoinMessage.verify(message, address, signature)) {
                 reject("Signature is not valid")
             }
-            console.log("Adding block")
 
             let block = new BlockClass.Block({address: address, message: message, star: star});
             this._addBlock(block)
-            resolve(block)
+            .then(block => {resolve(block)})
+            .catch(err => {console.log(err)})
         });
     }
 
@@ -199,12 +204,13 @@ class Blockchain {
                 if (block.height > 0) {
                     block.validate().catch(err => {errorLog.push(err)})
                     let previousBlockHash = block.previousBlockHash
-                    let blockHash = chain[chainIndex - 1].hash;
+                    let blockHash = self.chain[block.height - 1].hash;
                     if (blockHash != previousBlockHash) {
                         errorLog.push(`Hash at ${block.height} does not match.`);
                     }
                 }
             })
+            resolve(errorLog)
         });
     }
 
