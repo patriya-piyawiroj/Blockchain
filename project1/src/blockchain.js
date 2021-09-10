@@ -141,7 +141,7 @@ class Blockchain {
     getBlockByHash(hash) {
         let self = this;
         return new Promise((resolve, reject) => {
-           let res = self.chain.filter(block => block.hash == hash)
+           let res = self.chain.find((block) => block.hash == hash)
            if (res) {
                resolve(res);
            } else {
@@ -201,12 +201,14 @@ class Blockchain {
         let errorLog = [];
         return new Promise(async (resolve, reject) => {
             self.chain.forEach(block => {
-                if (block.height > 0) {
+                if (block.height >= 0) {
                     block.validate().catch(err => {errorLog.push(err)})
-                    let previousBlockHash = block.previousBlockHash
-                    let blockHash = self.chain[block.height - 1].hash;
-                    if (blockHash != previousBlockHash) {
-                        errorLog.push(`Hash at ${block.height} does not match.`);
+                    if (block.height != 0) {
+                        let previousBlockHash = block.previousBlockHash
+                        let blockHash = self.chain[block.height - 1].hash;
+                        if (blockHash != previousBlockHash) {
+                            errorLog.push(`Hash at ${block.height} does not match.`);
+                        }
                     }
                 }
             })
