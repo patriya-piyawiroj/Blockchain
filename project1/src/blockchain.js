@@ -202,7 +202,10 @@ class Blockchain {
         return new Promise(async (resolve, reject) => {
             self.chain.forEach(block => {
                 if (block.height >= 0) {
-                    block.validate().catch(err => {errorLog.push(err)})
+                    block.validate().then(isValid => {
+                        if (!isValid) {
+                            errorLog.push(`Hash at ${block.height} is invalid.`)
+                        }});
                     if (block.height != 0) {
                         let previousBlockHash = block.previousBlockHash
                         let blockHash = self.chain[block.height - 1].hash;

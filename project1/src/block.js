@@ -38,18 +38,15 @@ class Block {
     validate() {
         let self = this;
         return new Promise((resolve, reject) => {
-            // Save in auxiliary variable the current block hash
-            let currentHash = self.hash 
-            self.hash = null                                
-            let newHash = SHA256(JSON.stringify(self)).toString()
-            self.hash = currentHash
-            if (currentHash == newHash) {
-                resolve(true)
-            } else {
-                reject(false)
-            }
+            resolve(self.hash === SHA256(
+                JSON.stringify(
+                    {
+                        ...self,
+                        "hash": null
+                    }
+                )
+            ).toString())
         });
-        
     }
 
     /**
