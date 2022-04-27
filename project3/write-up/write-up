@@ -1,0 +1,44 @@
+The contract address:
+https://rinkeby.etherscan.io/address/0x7d7f6b9ef0b9f92180850f5afc4b4e6323b1f903
+
+Replacing FarmerRole...
+... 0x61a3064f01bf5495292c5c289bdb6c67a5e77ab127de33d82c7aea6184c606bc
+FarmerRole: 0x0c2f057443124c3c88772215b48c1b87a724125d
+Replacing DistributorRole...
+... 0x668c76482d1d5d67b07d83a19631c8362c6d6dc370b26821a0413f589694524a
+DistributorRole: 0xf9ba03dc76cbd484a24ea98030ad2120dddfe618
+Replacing RetailerRole...
+... 0x3b5a606229ec9f3e15572b2530706a797019f86032faeb4751f72783f54b4b40
+RetailerRole: 0x321671fb304370b606fef7dfb3c21121e4ee223e
+Replacing ConsumerRole...
+... 0xabe8adf79f8f8b1280a57111b108f98874409f118439778d17b84ba32b0f1c03
+ConsumerRole: 0xb5823c78c0dcc464f52fe474bbcb1f50a3651a80
+Replacing SupplyChain...
+... 0x3342a7a051ebf7bfc2fb0efad39880eaea20df88743aa9fa9fa8a6cbb7c1aa31
+SupplyChain: 0x7d7f6b9ef0b9f92180850f5afc4b4e6323b1f903
+
+node version number:
+v17.3.0
+
+Truffle version number:
+v4.1.14
+
+web3 version number:
+web3@1.2.1
+
+
+Libraries used:
+  "devDependencies": {
+    "lite-server": "2.4.0"
+    For seeing changes to website happen in real time 
+  }
+
+  "dependencies": {
+    "truffle-hdwallet-provider": "^1.0.17",
+    Network connection to ethereum through infura.io with transaction signing. 
+    Enables deployment to Rinkeby network with Metamask wallet.
+
+    "web3": "^1.7.0"
+    Used to connect to local/remote ethereum node
+  }
+
